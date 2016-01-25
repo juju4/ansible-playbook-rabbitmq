@@ -17,6 +17,9 @@ rabbitmq_users_definitions: []
 # Avoid setting up federation
 rabbitmq_federation: false
 
+rabbitmq_cert_source: 'local'
+#rabbitmq_cert_source: 'self'    # generated
+#rabbitmq_cert_source: 'none'    # don't, handle out of the role
 # defaults file for rabbitmq
 rabbitmq_cacert     : "files/rabbitmq_cacert.pem"
 rabbitmq_server_key : "files/rabbitmq_server_key.pem"
