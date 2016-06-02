@@ -10,11 +10,12 @@
   command: rabbitmq-plugins list -e -m
   register: result
   when: rabbitmq_plugins == []
+  changed_when: False
 
 - name: disable plugins if none added in the configuration
   rabbitmq_plugin:
     name={{ item }}
     state=disabled
   notify: restart rabbitmq-server
-  with_items: result.stdout_lines
+  with_items: "{{ result.stdout_lines }}"
   when: rabbitmq_plugins == []

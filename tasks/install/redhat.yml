@@ -8,8 +8,20 @@
     - erlang
     - libselinux-python
 
+- name: download rabbitmq rpm signature
+  get_url: url=https://www.rabbitmq.com/rabbitmq-signing-key-public.asc dest=/root/rabbitmq-signing-key-public.asc mode=0644
+- name: import rabbitmq rpm repository signature
+  command: "rpm --import /root/rabbitmq-signing-key-public.asc"
+
+## FIXME! ansible not detecting package already installed if http
+- name: check if rabbitmq-server installed
+  command: rpm -q rabbitmq-server
+  register: rpm
+  changed_when: false
+  ignore_errors: true
 - name: install rabbitmq-server (RedHat)
-  yum: name=http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.5/rabbitmq-server-3.3.5-1.noarch.rpm state=present
+  yum: name=https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.1/rabbitmq-server-3.6.1-1.noarch.rpm state=present
+  when: rpm is defined and rpm.rc != 0
 
 - name: enable rabbitmq-server to survive reboot
   service: name=rabbitmq-server enabled=yes
