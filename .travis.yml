@@ -1,11 +1,12 @@
 ---
+dist: trusty
 language: python
 python: "2.7"
 before_install:
   - sudo apt-get update -qq
 install:
   # Install Ansible.
-  - pip install ansible==1.6.0
+  - pip install ansible
 
   # Create an inventory file for testing.
   - "printf 'rabbit-standalone ansible_ssh_host=localhost' > inventory"
@@ -15,3 +16,7 @@ script:
 
   # NOTE(retr0h): Testing standalone until we can test a cluster with travis.
   - "ansible-playbook -vvvv -i inventory vagrant/standalone.yml --connection=local --sudo"
+
+# Run the role/playbook again, checking to make sure it's idempotent.
+  - "ansible-playbook -i inventory test/integration/default/default.yml --connection=local --sudo | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 1)"
+
