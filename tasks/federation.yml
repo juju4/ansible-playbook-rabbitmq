@@ -11,7 +11,7 @@
     state=restarted
   when: federation_plugin.changed
 
-## FIXME! "msg": "MODULE FAILURE"
+## FIXME! travis: "msg": "MODULE FAILURE"
 - name: set the federation-upstream parameter
   rabbitmq_parameter:
     component=federation-upstream

@@ -1,7 +1,5 @@
 ---
 
-- include: redhat-epel.yml
-
 - name: install rabbitmq-server dependencies (RedHat)
   yum: name="{{ item }}" state=present
   with_items:
