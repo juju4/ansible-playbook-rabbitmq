@@ -43,3 +43,6 @@ rabbitmq_conf_ssl_options_keyfile             : "/etc/rabbitmq/ssl/{{ rabbitmq_s
 rabbitmq_conf_ssl_options_fail_if_no_peer_cert: "true"
 
 rabbitmq_env: false
+
+rabbitmq_federation_configuration: []
+rabbitmq_policy_configuration: []
