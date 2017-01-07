@@ -4,8 +4,7 @@ language: python
 python: "2.7"
 before_install:
   - sudo apt-get update -qq
-  - ln -s ansible-playbook-rabbitmq ../Mayeu.RabbitMQ
-  - git clone https://github.com/juju4/ansible-redhat-epel ../redhat-epel
+ - "[ -f get-dependencies.sh ] && sh -x get-dependencies.sh"
 install:
   # Install Ansible.
   - pip install ansible
