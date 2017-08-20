@@ -17,8 +17,8 @@
     component=federation-upstream
     name={{ item.name }}
     vhost={{ item.vhost | default('/', false) }}
-    value='{{ item.value }}'
-  with_items: "{{ rabbitmq_federation_configuration }}"
+    value=" {{ item.value }} "
+  with_items: rabbitmq_federation_configuration
 
 - name: set the policy for the federation
   rabbitmq_policy:

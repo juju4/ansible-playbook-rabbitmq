@@ -1,3 +1,10 @@
+# UNMAINTAINED
+
+This playbook is not maintained anymore. I ma not using it since a long time,
+nor do I have time to maintain it.
+
+Feel free to fork if you wish. If you want I can even advertise your fork here.
+
 # Rabbitmq Playbook
 
 Playbook to install and configure rabbitmq. Will come with various
