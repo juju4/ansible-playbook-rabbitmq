@@ -1,26 +1,83 @@
 ---
-dist: trusty
-language: python
-python: "2.7"
+## from https://github.com/geerlingguy/ansible-role-apache/blob/master/.travis.yml
+sudo: required
+
+env:
+  - distribution: centos
+    version: 6
+    init: /sbin/init
+    run_opts: ""
+#    suite: default
+  - distribution: centos
+    version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default
+  - distribution: ubuntu
+    version: 16.04
+    init: /lib/systemd/systemd
+    run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default
+  - distribution: ubuntu
+    version: 14.04
+    init: /sbin/init
+    run_opts: ""
+    suite: default
+  - distribution: ubuntu
+    version: 12.04
+    init: /sbin/init
+    run_opts: ""
+    suite: default
+#  - distribution: alpine
+#    version: 3.6
+#    init: /sbin/init
+#    run_opts: ""
+#    suite: default
+
+services:
+  - docker
+
 before_install:
-  - sudo apt-get update -qq
+  # - sudo apt-get update
+  # Pull container
+  - 'sudo docker pull ${distribution}:${version}'
+  - env
+  - pwd
+  - find -ls
   - "[ -f get-dependencies.sh ] && sh -x get-dependencies.sh"
-install:
-  # Install Ansible.
-  - pip install ansible
+  - cp test/travis/initctl_faker test/
+  # Customize container
+  - 'sudo docker build --rm=true --file=test/travis/Dockerfile.${distribution}-${version} --tag=${distribution}-${version}:ansible test'
 
-  # Create an inventory file for testing.
-  - "printf 'rabbit-standalone ansible_ssh_host=localhost' > inventory"
 script:
-  # Check the role/playbook's syntax.
-  - "ansible-playbook -i inventory vagrant/site.yml --syntax-check"
+  - container_id=$(mktemp)
+    # Run container in detached state
+  - 'sudo docker run --detach --volume="${PWD%/*}":/etc/ansible/roles:ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"'
 
-  # NOTE(retr0h): Testing standalone until we can test a cluster with travis.
-  - "ansible-playbook -vvvv -i inventory vagrant/standalone.yml --connection=local --become"
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible --version'
 
-# Run the role/playbook again, checking to make sure it's idempotent.
-  - "ansible-playbook -i inventory vagrant/standalone.yml --connection=local --become | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 1)"
+  # Ansible syntax check.
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/Mayeu.RabbitMQ/test/integration/${suite}/default.yml --syntax-check'
+
+  # Test role.
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/Mayeu.RabbitMQ/test/integration/${suite}/default.yml -vvv'
+
+  # Test role idempotence.
+  - >
+    sudo docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/Mayeu.RabbitMQ/test/integration/${suite}/default.yml
+    | tee /tmp/idempotency.log
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 1)
 
 after_failure:
-  - service --status-all
-  - sudo cat /var/log/syslog
+  # Check what happened on systemd systems.
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm systemctl -l status rabbitmq-server.service'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm journalctl -xe --no-pager'
+
+after_script:
+  # Clean up
+  - 'sudo docker stop "$(cat ${container_id})"'
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
