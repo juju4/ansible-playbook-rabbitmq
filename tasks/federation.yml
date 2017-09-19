@@ -11,14 +11,13 @@
     state=restarted
   when: federation_plugin.changed
 
-## FIXME! travis: "msg": "MODULE FAILURE"
 - name: set the federation-upstream parameter
   rabbitmq_parameter:
     component=federation-upstream
     name={{ item.name }}
     vhost={{ item.vhost | default('/', false) }}
     value=" {{ item.value }} "
-  with_items: rabbitmq_federation_configuration
+  with_items: "{{ rabbitmq_federation_configuration }}"
 
 - name: set the policy for the federation
   rabbitmq_policy:
