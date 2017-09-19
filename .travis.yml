@@ -23,4 +23,4 @@ script:
 
 after_failure:
   - service --status-all
-  - cat /var/log/syslog
+  - sudo cat /var/log/syslog
