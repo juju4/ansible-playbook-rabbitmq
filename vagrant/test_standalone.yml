@@ -1,4 +1,9 @@
 ---
+- name: Ensure netstat is present
+  package:
+    name: net-tools
+    state: present
+
 - shell: netstat -an | grep 0.0.0.0:5672.*LISTEN
   register: test_result
   ignore_errors: True
