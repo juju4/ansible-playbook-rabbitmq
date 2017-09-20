@@ -23,11 +23,11 @@ env:
     init: /sbin/init
     run_opts: ""
     suite: default
-  - distribution: ubuntu
-    version: 12.04
-    init: /sbin/init
-    run_opts: ""
-    suite: default
+#  - distribution: ubuntu
+#    version: 12.04
+#    init: /sbin/init
+#    run_opts: ""
+#    suite: default
 #  - distribution: alpine
 #    version: 3.6
 #    init: /sbin/init
