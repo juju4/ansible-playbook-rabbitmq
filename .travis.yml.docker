@@ -3,10 +3,10 @@
 sudo: required
 
 env:
-  - distribution: centos
-    version: 6
-    init: /sbin/init
-    run_opts: ""
+#  - distribution: centos
+#    version: 6
+#    init: /sbin/init
+#    run_opts: ""
 #    suite: default
   - distribution: centos
     version: 7
@@ -23,16 +23,31 @@ env:
     init: /sbin/init
     run_opts: ""
     suite: default
-  - distribution: ubuntu
-    version: 12.04
-    init: /sbin/init
-    run_opts: ""
-    suite: default
+#  - distribution: ubuntu
+#    version: 12.04
+#    init: /sbin/init
+#    run_opts: ""
+#    suite: default
 #  - distribution: alpine
 #    version: 3.6
 #    init: /sbin/init
 #    run_opts: ""
 #    suite: default
+  - distribution: centos
+    version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default-testing
+  - distribution: ubuntu
+    version: 16.04
+    init: /lib/systemd/systemd
+    run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default-testing
+  - distribution: ubuntu
+    version: 14.04
+    init: /sbin/init
+    run_opts: ""
+    suite: default-testing
 
 services:
   - docker
@@ -60,7 +75,7 @@ script:
   - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/Mayeu.RabbitMQ/test/integration/${suite}/default.yml --syntax-check'
 
   # Test role.
-  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/Mayeu.RabbitMQ/test/integration/${suite}/default.yml -vvv'
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/Mayeu.RabbitMQ/test/integration/${suite}/default.yml -vvvv'
 
   # Test role idempotence.
   - >
@@ -72,7 +87,7 @@ script:
 
 after_failure:
   # Check what happened on systemd systems.
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm systemctl -l status rabbitmq-server.service'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm systemctl -l --no-pager status rabbitmq-server.service'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm journalctl -xe --no-pager'
 
 after_script:
