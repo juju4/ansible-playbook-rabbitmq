@@ -28,4 +28,6 @@
   tasks:
     # Flush outstanding handlers before tests.
     - meta:    flush_handlers
-    - import_tasks: Mayeu.RabbitMQ/vagrant/test_standalone.yml
+## 2.4+ include deprecation warning. available for xenial but not centos7
+    - include: testing.yml
+#    - import_tasks: testing.yml
