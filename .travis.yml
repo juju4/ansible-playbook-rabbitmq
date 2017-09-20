@@ -3,11 +3,11 @@
 sudo: required
 
 env:
-  - distribution: centos
-    version: 6
-    init: /sbin/init
-    run_opts: ""
-    suite: default
+#  - distribution: centos
+#    version: 6
+#    init: /sbin/init
+#    run_opts: ""
+#    suite: default
   - distribution: centos
     version: 7
     init: /usr/lib/systemd/systemd
@@ -33,6 +33,21 @@ env:
 #    init: /sbin/init
 #    run_opts: ""
 #    suite: default
+  - distribution: centos
+    version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default-testing
+  - distribution: ubuntu
+    version: 16.04
+    init: /lib/systemd/systemd
+    run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default-testing
+  - distribution: ubuntu
+    version: 14.04
+    init: /sbin/init
+    run_opts: ""
+    suite: default-testing
 
 services:
   - docker
