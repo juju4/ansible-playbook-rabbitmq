@@ -8,8 +8,11 @@
 
 - name: download rabbitmq rpm signature
   get_url: url=https://www.rabbitmq.com/rabbitmq-signing-key-public.asc dest=/root/rabbitmq-signing-key-public.asc mode=0644
+
 - name: import rabbitmq rpm repository signature
-  command: "rpm --import /root/rabbitmq-signing-key-public.asc"
+  rpm_key:
+    state: present
+    key: /root/rabbitmq-signing-key-public.asc
 
 ## FIXME! ansible not detecting package already installed if http
 - name: check if rabbitmq-server installed
