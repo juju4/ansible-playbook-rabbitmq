@@ -1,6 +1,7 @@
-# UNMAINTAINED
+[![Build Status - Master](https://travis-ci.org/juju4/ansible-playbook-rabbitmq.svg?branch=master)](https://travis-ci.org/juju4/ansible-playbook-rabbitmq)
+[![Build Status - Devel](https://travis-ci.org/juju4/ansible-playbook-rabbitmq.svg?branch=devel)](https://travis-ci.org/juju4/ansible-playbook-rabbitmq/branches)
 
-This playbook is not maintained anymore. I ma not using it since a long time,
+(upstream) This playbook is not maintained anymore. I ma not using it since a long time,
 nor do I have time to maintain it.
 
 Feel free to fork if you wish. If you want I can even advertise your fork here.
