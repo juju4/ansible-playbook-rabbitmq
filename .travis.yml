@@ -7,7 +7,7 @@ env:
     version: 6
     init: /sbin/init
     run_opts: ""
-#    suite: default
+    suite: default
   - distribution: centos
     version: 7
     init: /usr/lib/systemd/systemd
