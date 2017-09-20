@@ -28,4 +28,4 @@
   tasks:
     # Flush outstanding handlers before tests.
     - meta:    flush_handlers
-    - include: Mayeu.RabbitMQ/vagrant/test_standalone.yml
+    - import_tasks: Mayeu.RabbitMQ/vagrant/test_standalone.yml
