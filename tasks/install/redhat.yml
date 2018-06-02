@@ -6,6 +6,7 @@
 #    - erlang
     - libselinux-python
     - https://github.com/rabbitmq/erlang-rpm/releases/download/v20.3.6/erlang-20.3.6-1.el7.centos.x86_64.rpm
+    - iproute
 
 - name: download rabbitmq rpm signature
   get_url: url=https://www.rabbitmq.com/rabbitmq-signing-key-public.asc dest=/root/rabbitmq-signing-key-public.asc mode=0644
@@ -31,3 +32,13 @@
 
 - name: enable rabbitmq-server to survive reboot
   service: name=rabbitmq-server enabled=yes
+  when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+
+- name: Docker | restart rabbitmq
+  shell: "{{ item }}"
+  become: yes
+  become_user: rabbitmq
+  with_items:
+    - /usr/sbin/rabbitmqctl shutdown
+    - /usr/sbin/rabbitmq-server &
+  when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
