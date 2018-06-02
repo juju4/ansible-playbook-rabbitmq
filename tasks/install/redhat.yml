@@ -21,7 +21,9 @@
   changed_when: false
   ignore_errors: true
 - name: install rabbitmq-server (RedHat)
-  yum: name=https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.1/rabbitmq-server-3.6.1-1.noarch.rpm state=present
+  yum:
+    name: https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.5/rabbitmq-server-3.7.5-1.el7.noarch.rpm
+    state: present
   when: rpm is defined and rpm.rc != 0
 
 - name: enable rabbitmq-server to survive reboot
