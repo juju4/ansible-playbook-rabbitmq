@@ -3,8 +3,9 @@
 - name: install rabbitmq-server dependencies (RedHat)
   yum: name="{{ item }}" state=present
   with_items:
-    - erlang
+#    - erlang
     - libselinux-python
+    - https://github.com/rabbitmq/erlang-rpm/releases/download/v20.3.6/erlang-20.3.6-1.el7.centos.x86_64.rpm
 
 - name: download rabbitmq rpm signature
   get_url: url=https://www.rabbitmq.com/rabbitmq-signing-key-public.asc dest=/root/rabbitmq-signing-key-public.asc mode=0644
@@ -25,7 +26,6 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - https://github.com/rabbitmq/erlang-rpm/releases/download/v20.3.6/erlang-20.3.6-1.el7.centos.x86_64.rpm
     - https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.5/rabbitmq-server-3.7.5-1.el7.noarch.rpm
   when: rpm is defined and rpm.rc != 0
 
