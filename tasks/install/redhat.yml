@@ -22,8 +22,11 @@
   ignore_errors: true
 - name: install rabbitmq-server (RedHat)
   yum:
-    name: https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.5/rabbitmq-server-3.7.5-1.el7.noarch.rpm
+    name: "{{ item }}"
     state: present
+  with_items:
+    - https://github.com/rabbitmq/erlang-rpm/releases/download/v20.3.6/erlang-20.3.6-1.el7.centos.x86_64.rpm
+    - https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.5/rabbitmq-server-3.7.5-1.el7.noarch.rpm
   when: rpm is defined and rpm.rc != 0
 
 - name: enable rabbitmq-server to survive reboot
