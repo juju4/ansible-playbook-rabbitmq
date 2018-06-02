@@ -1,6 +1,7 @@
 ---
 - name: ensure rabbitmq is runned
   service: name=rabbitmq-server state=started
+  when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
 
 - name: add rabbitmq vhost
   rabbitmq_vhost: >
