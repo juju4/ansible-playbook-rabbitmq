@@ -64,4 +64,4 @@
     owner: rabbitmq
     group: rabbitmq
     mode: '0600'
-    state: file
+    state: touch
