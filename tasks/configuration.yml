@@ -75,4 +75,5 @@
         owner: rabbitmq
         group: rabbitmq
         mode: '0600'
+        create: yes
   when: not cookie.stat.exists or cookie.stat.size == 0
