@@ -57,3 +57,11 @@
     backup=yes
   notify: restart rabbitmq-server
   when: rabbitmq_conf_env is defined
+
+- name: Ensure correct permission for .erlang.cookie
+  file:
+    dest: /var/lib/rabbitmq/.erlang.cookie
+    owner: rabbitmq
+    group: rabbitmq
+    mode: '0600'
+    state: file
