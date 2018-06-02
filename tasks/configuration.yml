@@ -58,10 +58,21 @@
   notify: restart rabbitmq-server
   when: rabbitmq_conf_env is defined
 
-- name: Ensure correct permission for .erlang.cookie
-  file:
-    dest: /var/lib/rabbitmq/.erlang.cookie
-    owner: rabbitmq
-    group: rabbitmq
-    mode: '0600'
-    state: touch
+# https://www.rabbitmq.com/clustering.html
+- name: Check if .erlang.cookie is already set
+  stat:
+    path: /var/lib/rabbitmq/.erlang.cookie
+  register: cookie
+
+- block:
+    - name: generate cookie
+      shell: "strings /dev/urandom | grep -o '[[:alnum:]]' | head -n 255 | tr -d '\n'"
+      register: random
+    - name: Ensure .erlang.cookie is set
+      lineinfile:
+        dest: /var/lib/rabbitmq/.erlang.cookie
+        line: "{{ random.stdout }}"
+        owner: rabbitmq
+        group: rabbitmq
+        mode: '0600'
+  when: not cookie.stat.exists or cookie.stat.size == 0
