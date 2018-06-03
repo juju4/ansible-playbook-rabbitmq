@@ -95,6 +95,9 @@ after_failure:
   # Check what happened on systemd systems.
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm systemctl -l --no-pager status rabbitmq-server.service'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm journalctl -xe --no-pager'
+  # https://github.com/rabbitmq/rabbitmq-server-release/issues/39
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ls -la /var/lib/rabbitmq/.erlang.cookie `which beam`'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm sestatus'
 
 after_script:
   # Clean up
