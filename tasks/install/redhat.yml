@@ -31,14 +31,5 @@
   when: rpm is defined and rpm.rc != 0
 
 - name: enable rabbitmq-server to survive reboot
-  service: name=rabbitmq-server enabled=yes
-  when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
-
-- name: Docker | restart rabbitmq
-  shell: "{{ item }}"
-  become: yes
-  become_user: rabbitmq
-  with_items:
-    - /usr/sbin/rabbitmqctl shutdown
-    - /usr/sbin/rabbitmq-server &
+  service: name=rabbitmq-server enabled=yes state=started
   when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")

@@ -5,3 +5,29 @@
 
 - include: redhat.yml
   when: ansible_os_family == 'RedHat'
+
+- debug: var=ansible_virtualization_type
+- name: Docker | restart rabbitmq
+  shell: "{{ item }}"
+  become: yes
+  become_user: rabbitmq
+  with_items:
+    - /usr/sbin/rabbitmqctl shutdown
+    - /usr/sbin/rabbitmq-server &
+  ignore_errors: true
+  when: (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+
+# https://www.rabbitmq.com/clustering.html
+- name: Check if .erlang.cookie is already set
+  stat:
+    path: /var/lib/rabbitmq/.erlang.cookie
+  register: cookie
+
+- block:
+    - name: Ensure .erlang.cookie has right permissions
+      file:
+        dest: /var/lib/rabbitmq/.erlang.cookie
+        owner: rabbitmq
+        group: rabbitmq
+        mode: '0400'
+  when: not cookie.stat.exists
