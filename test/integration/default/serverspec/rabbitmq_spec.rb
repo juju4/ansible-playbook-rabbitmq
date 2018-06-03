@@ -30,9 +30,10 @@ describe file('/etc/rabbitmq/rabbitmq.config') do
   it { should be_readable }
 end
 
-describe process("rabbitmq-server") do
-  its(:user) { should eq "rabbitmq" }
-end
+#describe process("rabbitmq-server") do
+#  its(:user) { should eq "rabbitmq" }
+#end
+
 describe process("beam.smp") do
   its(:user) { should eq "rabbitmq" }
 end
