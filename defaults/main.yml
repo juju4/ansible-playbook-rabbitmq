@@ -21,10 +21,10 @@ rabbitmq_cert_source: 'local'
 #rabbitmq_cert_source: 'self'    # generated
 #rabbitmq_cert_source: 'none'    # don't, handle out of the role
 # defaults file for rabbitmq
-rabbitmq_cacert     : "files/rabbitmq_cacert.pem"
-rabbitmq_server_key : "files/rabbitmq_server_key.pem"
+rabbitmq_cacert: "files/rabbitmq_cacert.pem"
+rabbitmq_server_key: "files/rabbitmq_server_key.pem"
 rabbitmq_server_cert: "files/rabbitmq_server_cert.pem"
-rabbitmq_ssl        : true
+rabbitmq_ssl: true
 
 # ######################
 # RabbitMQ Configuration
@@ -35,11 +35,11 @@ rabbitmq_conf_tcp_listeners_address: ''
 rabbitmq_conf_tcp_listeners_port: 5672
 
 # rabbitmq SSL configuration
-rabbitmq_conf_ssl_listeners_address           : '0.0.0.0'
-rabbitmq_conf_ssl_listeners_port              : 5671
-rabbitmq_conf_ssl_options_cacertfile          : "/etc/rabbitmq/ssl/{{ rabbitmq_cacert | basename }}"
-rabbitmq_conf_ssl_options_certfile            : "/etc/rabbitmq/ssl/{{ rabbitmq_server_cert | basename }}"
-rabbitmq_conf_ssl_options_keyfile             : "/etc/rabbitmq/ssl/{{ rabbitmq_server_key | basename }}"
+rabbitmq_conf_ssl_listeners_address: '0.0.0.0'
+rabbitmq_conf_ssl_listeners_port: 5671
+rabbitmq_conf_ssl_options_cacertfile: "/etc/rabbitmq/ssl/{{ rabbitmq_cacert | basename }}"
+rabbitmq_conf_ssl_options_certfile: "/etc/rabbitmq/ssl/{{ rabbitmq_server_cert | basename }}"
+rabbitmq_conf_ssl_options_keyfile: "/etc/rabbitmq/ssl/{{ rabbitmq_server_key | basename }}"
 rabbitmq_conf_ssl_options_fail_if_no_peer_cert: "true"
 
 rabbitmq_env: false

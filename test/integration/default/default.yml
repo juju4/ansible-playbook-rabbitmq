@@ -2,9 +2,8 @@
 
 - hosts: all
   vars:
-    - rabbitmq_cacert     : "vagrant/files/rabbitmq_cacert.pem"
-    - rabbitmq_server_key : "vagrant/files/rabbitmq_server_key.pem"
+    - rabbitmq_cacert: "vagrant/files/rabbitmq_cacert.pem"
+    - rabbitmq_server_key: "vagrant/files/rabbitmq_server_key.pem"
     - rabbitmq_server_cert: "vagrant/files/rabbitmq_server_cert.pem"
   roles:
     - Mayeu.RabbitMQ
-

@@ -7,9 +7,14 @@
     - libselinux-python
     - https://github.com/rabbitmq/erlang-rpm/releases/download/v20.3.6/erlang-20.3.6-1.el7.centos.x86_64.rpm
     - iproute
+  register: pkg_result
+  until: pkg_result is success
 
 - name: download rabbitmq rpm signature
-  get_url: url=https://www.rabbitmq.com/rabbitmq-signing-key-public.asc dest=/root/rabbitmq-signing-key-public.asc mode=0644
+  get_url:
+    url: https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+    dest: /root/rabbitmq-signing-key-public.asc
+    mode: 0644
 
 - name: import rabbitmq rpm repository signature
   rpm_key:
@@ -29,6 +34,8 @@
   with_items:
     - https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.5/rabbitmq-server-3.7.5-1.el7.noarch.rpm
   when: rpm is defined and rpm.rc != 0
+  register: pkg_result
+  until: pkg_result is success
 
 - name: enable rabbitmq-server to survive reboot
   service: name=rabbitmq-server enabled=yes state=started
