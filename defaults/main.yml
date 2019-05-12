@@ -46,3 +46,5 @@ rabbitmq_env: false
 
 rabbitmq_federation_configuration: []
 rabbitmq_policy_configuration: []
+
+rabbitmq_guest_enable: false
