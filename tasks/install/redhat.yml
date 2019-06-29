@@ -34,7 +34,7 @@
 - name: install rabbitmq-server (RedHat)
   yum:
     name:
-      - https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.5/rabbitmq-server-3.7.5-1.el7.noarch.rpm
+      - https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.15/rabbitmq-server-3.7.15-1.el7.noarch.rpm
     state: present
   when: rpm is defined and rpm.rc != 0
   register: pkg_result
