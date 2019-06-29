@@ -4,4 +4,4 @@
 - include: plugins.yml
 - include: vhost.yml
 - include: federation.yml
-  when: rabbitmq_federation
+  when: rabbitmq_federation|bool
