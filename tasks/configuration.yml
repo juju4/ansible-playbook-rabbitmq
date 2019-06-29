@@ -6,7 +6,7 @@
     group=rabbitmq
     mode=0750
     state=directory
-  when: rabbitmq_ssl
+  when: rabbitmq_ssl|bool
 
 - block:
     - name: copy the ssl certificates
@@ -24,7 +24,7 @@
           dest: "{{ rabbitmq_conf_ssl_options_keyfile }}"
         - src: "{{ rabbitmq_server_cert }}"
           dest: "{{ rabbitmq_conf_ssl_options_certfile }}"
-  when: rabbitmq_ssl and rabbitmq_cert_source == 'local'
+  when: rabbitmq_ssl|bool and rabbitmq_cert_source == 'local'
 
 - stat: path="{{ rabbitmq_conf_ssl_options_certfile }}"
   register: existingcert

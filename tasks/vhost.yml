@@ -33,11 +33,11 @@
     state=absent
   register: rm_guest_hostname
   ignore_errors: true
-  when: not rabbitmq_guest_enable
+  when: not rabbitmq_guest_enable|bool
 
 - name: remove guest user (default)
   rabbitmq_user:
     user=guest
     vhost=/
     state=absent
-  when: rm_guest_hostname|failed and not rabbitmq_guest_enable
+  when: rm_guest_hostname is failed and not rabbitmq_guest_enable|bool
