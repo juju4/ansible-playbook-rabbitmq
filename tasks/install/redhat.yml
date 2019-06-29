@@ -5,7 +5,7 @@
     name:
 #      - erlang
       - libselinux-python
-      - https://github.com/rabbitmq/erlang-rpm/releases/download/v20.3.6/erlang-20.3.6-1.el7.centos.x86_64.rpm
+      - "{{ erlang_rpm | default('https://github.com/rabbitmq/erlang-rpm/releases/download/v22.0.4/erlang-22.0.4-1.el7.x86_64.rpm') }}"
       - iproute
     state: present
   register: pkg_result
