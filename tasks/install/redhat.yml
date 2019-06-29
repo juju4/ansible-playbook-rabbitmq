@@ -28,12 +28,14 @@
   register: rpm
   changed_when: false
   ignore_errors: true
+  args:
+    warn: false
+
 - name: install rabbitmq-server (RedHat)
   yum:
-    name: "{{ item }}"
+    name:
+      - https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.5/rabbitmq-server-3.7.5-1.el7.noarch.rpm
     state: present
-  with_items:
-    - https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.5/rabbitmq-server-3.7.5-1.el7.noarch.rpm
   when: rpm is defined and rpm.rc != 0
   register: pkg_result
   until: pkg_result is success
